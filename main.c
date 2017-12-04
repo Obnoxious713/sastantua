@@ -1,4 +1,4 @@
-#include <stdio.h>
+#include <io.h>
 
 void		ft_putchar(char c)
 {
@@ -14,110 +14,111 @@ void		ft_putstr(char *str)
 	}
 }
 
-void		findsquare(int size)
-{
-	int		x;
-	int		y;
-	int		tier_count;
-	int		*tier_rnbr;
-	int		spaces;
-	char	*row;
 
-	x = 0;
-	y = 0;
-	tier_count = 1;
-	tier_rnbr[1] = 3;
-	spaces = 0;
+int			base_size(int size)
+{
+	int		tier;
+	int		row_len;
+	int		tier_jump;
+
+	tier = 1; // 2, 3, 4
+	row_len = 1; // 7, 15, 25
+	tier_jump = 4; // 6, 6, 8
+	while (tier <= size)
+	{
+		row_len += 2 * (2 + tier);
+		tier++;
+		if (tier % 2 && tier < size)
+			tier_jump += 2;
+	}
+	return (row_len)
+}
+
+void		ft_putspaces(int space) 
+{
+	int		col_nbr;
+	
+	col_nbr = 0;
+	while (col_nbr < space)
+	{
+		ft_putchar(' ');
+		col_nbr++;
+	}
+}
+
+void		create_pyramid(int size, int tier /*floor*/,  int row_len /*width*/, int row_nbr /*step*/)
+{
+	int		door;
+	int		col_nbr;
+
+	col_nbr = 0;
+	while (col_nbr < row_len)
+	{
+		if (col_nbr == 0)
+			ft_putchar('/');
+		else if (col_nbr == row_len - 1)
+			ft_putchar('\\');
+		else
+		{
+			if (tier == size && col_nbr >= (row_len - door) / 2
+			{		&& col_nbr < (row_len + door) / 2 && 2 + tier - row_nbr <= door)
+				if (door >= 5 && row_len == 2 + tier - door / 2 - 1
+						&& col_nbr == (row_len + door) / 2 - 2)
+					ft_putchar('$');
+				else
+					ft_putchar('|');
+			}
+			else
+				ft_putchar('*');
+		}
+		col_nbr++;
+	}
+}
 	// the two outermost chars are '/' and '\' respectivly
 		// find the longest row based on the size
 			// subtract the amount in that row
 				// divide new number, spaces, by two
 					// put that many spaces before and after '/' and '\'
-	while (tier_count <= size)
-	{
-		while (*row != '\0')
-		{
-			if (tier_count == 1)
-			{
-				x = 7;
-				y = 3;
-				spaces = (x - y) / 2;
-				if (*row <= spaces || *row >= x - spaces)
-					ft_putchar(' ');
-				else if (*row == spaces + 1)
-					ft_putchar('/');
-				else if (*row == x - (spaces - 1))
-					ft_putchar('\\');
-				else
-					ft_putchar('*');
-			}
-			row++;
-		}
-		tier_count++;
-	}
-}
-/*
-void		printrow(int size)
-{
-	char	*row;
-	int		row_nbr;
-	int		spaces;
-	int		*nbr_char;
-	int		lines;
-	int		tier;
-	int		tier_rnbr;
-
-	spaces = 4;
-	nbr_char[0] = 3;
-	row_nbr = 0;
-	tier = 1; // EACH TIER IS JUST A SQUARE INCLUDING THE SPACES
+	
+ // EACH TIER IS JUST A SQUARE INCLUDING THE SPACES
 				// first tier is 3 * 7
 				// add 10 to 3 and add 12 to 7
 					// increase each by two each time
 						// every other increases by 2 more
 							// total of 4
-	tier_rnbr = 3;
-	while (tier < size)
-	{
-		while (row[r] != '\0')
-		{
-			while (row_nbr > tier_rnbr)
-			{
-				if (lines == ('\0' - 1))
-				{
-					
-					spaces = (nbr_char[row_nbr] / 2) - nbr_char[0];
-					if (nbr_char[])
-						ft_putchar('\\');
-					if (row[r] == row[0])
-						ft_putchar('/');
-					else
-						ft_putchar('*');
-					nbr_char + 2;
-				}
-				if (row_nbr == tier_rnbr)
-				{
-					nbr_char + 4;
-					tier_rnbr++;
-				}
 				// the two outermost chars are '/' and '\' respectivly
 					// find the longest row based on the size
 						// subtract the amount in that row
 						// divide new number, spaces, by two
 						// put that many spaces before and after '/' and '\'
-				
-				row_nbr++;
-			}
-			r++;
-		}
-		tier++;
-	}
-	
-}
-*/
 
 void		sastantua(int size)
 {
+	int		tier;
+	int		nbr_tiers;
+	int		row_nbr;
+	int		row_len;
+
+	if (size < 1)
+		return (0);
+	tier = 1;
+	row_len = 1;
+	while (tier <= size)
+	{
+		nbr_tiers = 2 + tier;
+		row_nbr = 0;
+		while (row_nbr < nbr_tiers)
+		{
+			row_len += 2;
+			ft_putspaces((base_size(size) - row_len) / 2);
+			create_pyramid(size, tier, row_len, row_nbr);
+			ft_putchar('\n');
+			row_nbr++;
+		}
+		tier++;
+		row_len += 4 + 2 * ((tier - 2) / 2);
+	}
+
 	// what am I trying to do?
 		// print out pyrimid
 		// size givn as argv[1]
@@ -129,7 +130,7 @@ void		sastantua(int size)
 			// key '$' isn't printed before the 3rd tier
 		// each row add 2 '*'
 		// incorporate spaces before and after '/' and '\'
-	findsquare(size);
+	
 }
 
 int			main(int argc, char **argv)
@@ -138,6 +139,6 @@ int			main(int argc, char **argv)
 		return (0);
 	if (argv[1] == 0)
 		return (0);
-	ft_putstr(sastantua(argv[1]));
+	sastantua(argv[1]);
 	return (0);
 }
