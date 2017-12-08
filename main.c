@@ -1,144 +1,140 @@
-#include <io.h>
+#include <unistd.h>
+#include <stdlib.h>
 
-void		ft_putchar(char c)
+void            ft_putchar(char c)
 {
-	write(1, &c, 1);
+        write(1, &c, 1);
 }
 
-void		ft_putstr(char *str)
+int            base_size(int size)
 {
-	while (*str != '\0')
-	{
-		ft_putchar(str);
-		str++;
-	}
+    int        tier;
+    int        row_len;
+    int        base_len;
+    int        rows_per_tier;
+    int        row_nbr;
+    int        tier_jump;
+
+    tier = 1;
+    row_len = 3;
+    base_len = 0;
+    rows_per_tier = 0;
+    tier_jump = 6;
+    while (tier <= size)
+    {
+        row_nbr = 1;
+        rows_per_tier = tier + 2;
+        while (row_nbr < rows_per_tier)
+        {
+            row_len += 2;
+            row_nbr++;
+        }
+        if (row_nbr == rows_per_tier)
+        {
+            if (tier % 3 == 0)
+                tier_jump += 2;
+            if (tier != size)
+               row_len += tier_jump;
+        }
+        tier++;
+    }
+    base_len = row_len;
+    return (base_len);
 }
 
-
-int			base_size(int size)
+void           ft_putspaces(int space)
 {
-	int		tier;
-	int		row_len;
-	int		tier_jump;
+        int             col_nbr;
 
-	tier = 1; // 2, 3, 4
-	row_len = 1; // 7, 15, 25
-	tier_jump = 4; // 6, 6, 8
-	while (tier <= size)
-	{
-		row_len += 2 * (2 + tier);
-		tier++;
-		if (tier % 2 && tier < size)
-			tier_jump += 2;
-	}
-	return (row_len)
+        col_nbr = 0;
+        while (col_nbr < space)
+        {
+                ft_putchar(' ');
+                col_nbr++;
+        }
 }
 
-void		ft_putspaces(int space) 
+void            ft_putrow(int size, int tier, int row_len, int row_nbr)
 {
-	int		col_nbr;
-	
-	col_nbr = 0;
-	while (col_nbr < space)
-	{
-		ft_putchar(' ');
-		col_nbr++;
-	}
+        int             col_nbr;
+        int             door;
+        int             key;
+
+        col_nbr = 0;
+        door = 0;
+        while (col_nbr < row_len)
+        {
+                if (col_nbr == 0)
+                        ft_putchar('/');
+                else if (col_nbr == row_len - 1)
+                        ft_putchar('\\');
+                else if ((tier == size) && (row_nbr >= 2) && col_nbr == ((row_len / 2) - (size / 2)))
+                {
+                        while (door < size)
+                        {
+                                if ((tier >= 3 && door == size - 2) && row_nbr == (size +  3) / 2)
+                                        ft_putchar('$');
+                                else
+                                        ft_putchar('|');
+                                col_nbr += 1;
+                                door++;
+                        }
+                        col_nbr -= 1;
+                }
+                else
+                        ft_putchar('*');
+                col_nbr++;
+        }
 }
 
-void		create_pyramid(int size, int tier /*floor*/,  int row_len /*width*/, int row_nbr /*step*/)
+void            sastantua(int size)
 {
-	int		door;
-	int		col_nbr;
+        int             tier;
+        int             row_nbr;
+        int             row_len;
+        int             rows_per_tier;
+        int             row_bases;
+        int             tier_jump;
 
-	col_nbr = 0;
-	while (col_nbr < row_len)
-	{
-		if (col_nbr == 0)
-			ft_putchar('/');
-		else if (col_nbr == row_len - 1)
-			ft_putchar('\\');
-		else
-		{
-			if (tier == size && col_nbr >= (row_len - door) / 2
-			{		&& col_nbr < (row_len + door) / 2 && 2 + tier - row_nbr <= door)
-				if (door >= 5 && row_len == 2 + tier - door / 2 - 1
-						&& col_nbr == (row_len + door) / 2 - 2)
-					ft_putchar('$');
-				else
-					ft_putchar('|');
-			}
-			else
-				ft_putchar('*');
-		}
-		col_nbr++;
-	}
-}
-	// the two outermost chars are '/' and '\' respectivly
-		// find the longest row based on the size
-			// subtract the amount in that row
-				// divide new number, spaces, by two
-					// put that many spaces before and after '/' and '\'
-	
- // EACH TIER IS JUST A SQUARE INCLUDING THE SPACES
-				// first tier is 3 * 7
-				// add 10 to 3 and add 12 to 7
-					// increase each by two each time
-						// every other increases by 2 more
-							// total of 4
-				// the two outermost chars are '/' and '\' respectivly
-					// find the longest row based on the size
-						// subtract the amount in that row
-						// divide new number, spaces, by two
-						// put that many spaces before and after '/' and '\'
-
-void		sastantua(int size)
-{
-	int		tier;
-	int		nbr_tiers;
-	int		row_nbr;
-	int		row_len;
-
-	if (size < 1)
-		return (0);
-	tier = 1;
-	row_len = 1;
-	while (tier <= size)
-	{
-		nbr_tiers = 2 + tier;
-		row_nbr = 0;
-		while (row_nbr < nbr_tiers)
-		{
-			row_len += 2;
-			ft_putspaces((base_size(size) - row_len) / 2);
-			create_pyramid(size, tier, row_len, row_nbr);
-			ft_putchar('\n');
-			row_nbr++;
-		}
-		tier++;
-		row_len += 4 + 2 * ((tier - 2) / 2);
-	}
-
-	// what am I trying to do?
-		// print out pyrimid
-		// size givn as argv[1]
-		// after the first, and after the second, tier add 6 '*'
-			// every 2 tiers add 2 more '*'
-		//center of the bottom most row is '|'
-		// door is perfect square
-			// the diminsions == size
-			// key '$' isn't printed before the 3rd tier
-		// each row add 2 '*'
-		// incorporate spaces before and after '/' and '\'
-	
+        tier = 1;
+        row_len = 1;
+        rows_per_tier = 0;
+        tier_jump = 4;
+        row_bases = base_size(size);
+        while (tier <= size)
+        {
+                if (tier == 1)
+                        row_len = 3;
+                row_nbr = 0;
+                rows_per_tier = tier + 2;
+                while (row_nbr < rows_per_tier)
+                {
+                        ft_putspaces((row_bases - row_len) / 2);
+                        ft_putrow(size, tier, row_len, row_nbr);
+                        ft_putchar('\n');
+                        row_len += 2;
+                        row_nbr++;
+                }
+                if (row_nbr == rows_per_tier)
+                {
+                    if (tier % 3 == 0)
+                        tier_jump += 2;
+                    if (tier != size)
+                       row_len += tier_jump;
+                }
+            tier++;
+        }
 }
 
-int			main(int argc, char **argv)
-{	
-	if (argc != 2)
-		return (0);
-	if (argv[1] == 0)
-		return (0);
-	sastantua(argv[1]);
-	return (0);
+int                     main(int argc, char **argv)
+{
+        int     av;
+
+        av = atoi(argv[1]);
+        if (argc != 2)
+                return (0);
+        if (argv[1] == 0)
+                return (0);
+        sastantua(av);
+        return (0);
 }

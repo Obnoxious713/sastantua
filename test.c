@@ -1,5 +1,7 @@
 #include <stdio.h>
 
+Hi Mike. I was just in one of these with another agent before the site crashed. I am having internet connection issues. After logging into my account it says that the internet status is connected but even hard wired to the modem I still get no access.I have restarted both modem and router easily 20 times in the past 4 days that we have been without internet.
+I can start with reprovisiong your modem 
 void        ft_putchar(char c)
 {
     write(1, &c, 1);
@@ -46,11 +48,6 @@ void        findsquare(int size)
         while (tier_rnbr <= y)
         {
             col = 0;
-            if (tier_rnbr > 1)
-            {
-              x + 2;
-              y + 2;
-            }
             while (col <= x)
             {
               
@@ -60,6 +57,7 @@ void        findsquare(int size)
                 else if (col == spaces + 1)
                     ft_putchar('/');
                 else if ((col > spaces) && (col < x - spaces))
+					//if (tier_rnbr > 1)
                   ft_putchar('*');
                 else if (col == x - spaces)
                     ft_putchar('\\');
@@ -86,6 +84,10 @@ void        findsquare(int size)
             }
           ft_putchar('\n');
           tier_rnbr++;
+		  if (tier_rnbr > 1)
+            {
+              x + 2;
+            }
         }
         tier_count++;
     }
