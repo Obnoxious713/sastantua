@@ -1,5 +1,5 @@
-# sastantua
-  first project attempt after pisicne
+# Sastantua
+  Post P C project 00 attempt
   
-  prints the pyramid sastantua
+  Prints sastantua
   takes the number of tiers as input
